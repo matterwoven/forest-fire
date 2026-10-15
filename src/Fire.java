@@ -1,5 +1,11 @@
 
 import java.util.Queue;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.ArrayDeque;
+import java.util.List;
+import java.util.LinkedList;
+import java.util.ArrayList;
 
 public class Fire {
     /**
@@ -43,30 +49,43 @@ public class Fire {
         // just a location. What other information might be useful?
 
         // Implement this AND add more tests!!!
-        Queue<Integer[]> burnQueue = new Queue<>();
-        boolean isBurning = true;
-        while(isBurning){
+        Location start = new Location(matchR, matchC, 0);
+        boolean[][] visited = new boolean[forest.length][forest[0].length];
+        Queue<Location> burnQueue = new ArrayDeque<>();
+        while(!burnQueue.isEmpty()){
+            Location current = burnQueue.remove();
+            //if(visited.contains(current)) continue;
+            //make method?
+
+            if(forest[current.row()][current.column()] == 't')
             //int[][] burnedTrees = new int[forest.length*forest[0].length][2];
             //int burnedTime = burnedTreesAtTime(forest, burnedTrees, 0);
         }
 
+        
         //return burnedTime;
     }
 
-    //Burned trees
-    private static int burnedTreesAtTime(char[][] forest, int burnTime){
-        //Return burned trees at +1 increment
-        char[][] newForest = spreadFireBy1(forest);
-        if(forest == newForest)
-        //That's the idea
-        //int result = burnedTreesAtTime(forest, burnTime);
-    }
+    private static List<Location> burnedNeighbors(char[][] forest, Location current){
+        Location index = new Location(current.row(), current.column(), current.time());
+        int[][] moves = new int[][] {
+            {-1, 0}, //up
+            {1, 0}, //Down
+            {0, -1}, //Left
+            {0, 1} //Right
+        };
 
-    private static char[][] spreadFireBy1(char[][] forest){
-        for (int i = 0; forest.length > i; ) {
-            return null;
+        List<Location> validMoves = new ArrayList<>();
+
+        for(int[] move : moves){
+            Location possibleMove = new Location(current.row() + move[0], current.column() + move[1], current.time() + 1);
+            if(possibleMove.row() >= 0 && possibleMove.row() < forest.length &&
+               possibleMove.column() >= 0 && possibleMove.column() < forest[0].length &&
+               forest[possibleMove.row()][possibleMove.column()] != 'w') {
+                    validMoves.add(possibleMove);
+               }            
         }
-    }
 
-    //public static Location(int row, int column){}
+        return validMoves;
+    }
 }
