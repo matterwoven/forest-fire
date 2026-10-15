@@ -1,3 +1,6 @@
+
+import java.util.Queue;
+
 public class Fire {
     /**
      * Returns how long it takes for all vulnerable trees to be set on fire if a
@@ -40,13 +43,30 @@ public class Fire {
         // just a location. What other information might be useful?
 
         // Implement this AND add more tests!!!
-        int[][] burnedTrees = new int[forest.length*forest[0].length][2];
-        int burnedTime = burnedTreesAtTime(forest, burnedTrees);
+        Queue<Integer[]> burnQueue = new Queue<>();
+        boolean isBurning = true;
+        while(isBurning){
+            //int[][] burnedTrees = new int[forest.length*forest[0].length][2];
+            //int burnedTime = burnedTreesAtTime(forest, burnedTrees, 0);
+        }
 
-        return burnedTime;
+        //return burnedTime;
     }
 
-    private static int burnedTreesAtTime(char[][] forest, int[][] burnedTrees){
-        return 0;
+    //Burned trees
+    private static int burnedTreesAtTime(char[][] forest, int burnTime){
+        //Return burned trees at +1 increment
+        char[][] newForest = spreadFireBy1(forest);
+        if(forest == newForest)
+        //That's the idea
+        //int result = burnedTreesAtTime(forest, burnTime);
     }
+
+    private static char[][] spreadFireBy1(char[][] forest){
+        for (int i = 0; forest.length > i; ) {
+            return null;
+        }
+    }
+
+    //public static Location(int row, int column){}
 }
