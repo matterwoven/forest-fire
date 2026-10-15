@@ -40,6 +40,13 @@ public class Fire {
         // just a location. What other information might be useful?
 
         // Implement this AND add more tests!!!
-        return -1;
+        int[][] burnedTrees = new int[forest.length*forest[0].length][2];
+        int burnedTime = burnedTreesAtTime(forest, burnedTrees);
+
+        return burnedTime;
+    }
+
+    private static int burnedTreesAtTime(char[][] forest, int[][] burnedTrees){
+        return 0;
     }
 }
