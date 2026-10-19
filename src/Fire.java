@@ -49,43 +49,61 @@ public class Fire {
         // just a location. What other information might be useful?
 
         // Implement this AND add more tests!!!
-        Location start = new Location(matchR, matchC, 0);
-        boolean[][] visited = new boolean[forest.length][forest[0].length];
-        Queue<Location> burnQueue = new ArrayDeque<>();
-        while(!burnQueue.isEmpty()){
-            Location current = burnQueue.remove();
-            //if(visited.contains(current)) continue;
-            //make method?
-
-            if(forest[current.row()][current.column()] == 't')
-            //int[][] burnedTrees = new int[forest.length*forest[0].length][2];
-            //int burnedTime = burnedTreesAtTime(forest, burnedTrees, 0);
+        if (forest == null || forest.length == 0 || forest[0].length == 0) {
+            return 0;
         }
 
+        boolean[][] visited = new boolean[forest.length][forest[0].length];
+        Queue<Location> burnQueue = new ArrayDeque<>();
         
-        //return burnedTime;
+        // Ensure the starting location is valid and is actually a tree
+        if (matchR >= 0 && matchR < forest.length && matchC >= 0 && matchC < forest[0].length 
+                && forest[matchR][matchC] == 't') {
+            burnQueue.add(new Location(matchR, matchC, 0));
+            visited[matchR][matchC] = true;
+        }
+
+        int maxTime = 0;
+
+        while (!burnQueue.isEmpty()) {
+            Location current = burnQueue.remove();
+            maxTime = Math.max(maxTime, current.time());
+
+            // Process all valid adjacent unburned trees
+            for (Location neighbor : burnedNeighbors(forest, current)) {
+                if (!visited[neighbor.row()][neighbor.column()]) {
+                    visited[neighbor.row()][neighbor.column()] = true;
+                    burnQueue.add(neighbor);
+                }
+            }
+        }
+
+        return maxTime;
     }
 
-    private static List<Location> burnedNeighbors(char[][] forest, Location current){
-        Location index = new Location(current.row(), current.column(), current.time());
+    private static List<Location> burnedNeighbors(char[][] forest, Location current) {
         int[][] moves = new int[][] {
-            {-1, 0}, //up
-            {1, 0}, //Down
-            {0, -1}, //Left
-            {0, 1} //Right
+            {-1, 0}, // up
+            {1, 0},  // down
+            {0, -1}, // left
+            {0, 1}   // right
         };
 
         List<Location> validMoves = new ArrayList<>();
 
-        for(int[] move : moves){
-            Location possibleMove = new Location(current.row() + move[0], current.column() + move[1], current.time() + 1);
-            if(possibleMove.row() >= 0 && possibleMove.row() < forest.length &&
-               possibleMove.column() >= 0 && possibleMove.column() < forest[0].length &&
-               forest[possibleMove.row()][possibleMove.column()] != 'w') {
-                    validMoves.add(possibleMove);
-               }            
+        for (int[] move : moves) {
+            int newRow = current.row() + move[0];
+            int newCol = current.column() + move[1];
+
+            // Check boundaries and make sure the space is a tree ('t')
+            if (newRow >= 0 && newRow < forest.length &&
+                newCol >= 0 && newCol < forest[0].length &&
+                forest[newRow][newCol] == 't') {
+                validMoves.add(new Location(newRow, newCol, current.time() + 1));
+            }        
         }
 
         return validMoves;
     }
 }
+//e
